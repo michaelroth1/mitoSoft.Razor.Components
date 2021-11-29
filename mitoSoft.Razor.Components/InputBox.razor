@@ -17,7 +17,7 @@
                         </p>
                     }
                     <p>
-                        <input type="text" class="form-control" placeholder="@this._title" @bind="@Result">
+                        <input type="text" class="form-control" placeholder="@this._placeholder" @bind="@Result">
                     </p>
                 </div>
                 <div class="modal-footer">
@@ -32,8 +32,9 @@
 
 @code {
     private bool _show;
-    public string _title;
-    public string _prompt;
+    private string _title;
+    private string _prompt;
+    private string _placeholder;
 
     [Parameter]
     public string Result { get; set; }
@@ -44,10 +45,21 @@
     [Parameter]
     public Action<MouseEventArgs, string> OnOkClicked { get; set; }
 
+    public void Show(string title)
+    {
+        this.Show(title, "", "");
+    }
+
     public void Show(string title, string prompt)
+    {
+        this.Show(title, prompt, "");
+    }
+
+    public void Show(string title, string prompt, string placeholder)
     {
         _title = title;
         _prompt = prompt;
+        _placeholder = placeholder;
         _show = true;
         this.Result = string.Empty;
         InvokeAsync(StateHasChanged);
