@@ -1,0 +1,102 @@
+﻿@*http://blog.ppedv.de/post/Boostrap-Modal-Dialog-fur-Blazor*@
+
+@using mitoSoft.Razor.Components.Converters
+@using mitoSoft.Razor.Components.Enums
+
+@if (_show)
+{
+    <div class="modal fade show" id="myModal" style="display: block;">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>@this._title</h4>
+                    <button type="button" class="close" data-dismiss="modal" @onclick="@CloseClicked">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        @_message
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    @if (_dialogButtons == DialogButtons.OkCancle || _dialogButtons == DialogButtons.YesNo)
+                    {
+                        <button type="button" class="btn btn-primary" @onclick="@NoClicked">@_dialogButtons.ToNoText()</button>
+                    }
+                    <button type="button" class="btn btn-primary" @onclick="@YesClicked">@_dialogButtons.ToYesText()</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-backdrop fade show"></div>
+}
+
+@code {
+    private bool _show;
+    private string _title;
+    private string _message;
+    private DialogButtons _dialogButtons;
+
+    [Parameter]
+    public Action<MouseEventArgs, DialogResult> OnClosed { get; set; }
+
+    public void Show(string title, string message)
+    {
+        this.Show(title, message, DialogButtons.OK);
+    }
+
+    public void Show(string title, string message, DialogButtons buttons)
+    {
+        _dialogButtons = buttons;
+        _title = title;
+        _message = message;
+        _show = true;
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void CloseClicked(MouseEventArgs e)
+    {
+        this.Close();
+        this.OnClosed?.Invoke(e, DialogResult.None);
+    }
+
+    private void YesClicked(MouseEventArgs e)
+    {
+        this.Close();
+        if (_dialogButtons == DialogButtons.OK
+         || _dialogButtons == DialogButtons.OkCancle)
+        {
+            this.OnClosed?.Invoke(e, DialogResult.OK);
+        }
+        else if (_dialogButtons == DialogButtons.YesNo)
+        {
+            this.OnClosed?.Invoke(e, DialogResult.Yes);
+        }
+        else
+        {
+            throw new InvalidOperationException($"Invaid DialogButtons '{_dialogButtons}'.");
+        }
+    }
+
+    private void NoClicked(MouseEventArgs e)
+    {
+        this.Close();
+        if (_dialogButtons == DialogButtons.OkCancle)
+        {
+            this.OnClosed?.Invoke(e, DialogResult.Cancle);
+        }
+        else if (_dialogButtons == DialogButtons.YesNo)
+        {
+            this.OnClosed?.Invoke(e, DialogResult.No);
+        }
+        else
+        {
+            throw new InvalidOperationException($"Invaid DialogButtons '{_dialogButtons}'.");
+        }
+    }
+
+    private void Close()
+    {
+        _show = false;
+        InvokeAsync(StateHasChanged);
+    }
+}
