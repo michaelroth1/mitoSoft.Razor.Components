@@ -11,7 +11,7 @@ An exampe usage is given in the section below.
 
 ## Example usage
 
-MessageBox usage in a razor component.
+Usage in a razor component.
 
 ```c#
   
@@ -24,17 +24,3 @@ MessageBox usage in a razor component.
   
 	...
 ```
-
-More examples are provided in the [ExampleProject](mitoSoft.Razor.Components.Example).
-
-## Look and Feel
-
-The examples afterwards shows the boxes in a Blazor App that uses Bootstrap v4.3.1.
-
-### MessageBox
-
-![Screenshot](MessageBoxExample.png)
-
-### InputBox
-
-![Screenshot](IputBoxExample.png)
