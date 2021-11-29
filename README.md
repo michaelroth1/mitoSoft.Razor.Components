@@ -37,4 +37,4 @@ The examples afterwards shows the boxes in a Blazor App that uses Bootstrap v4.3
 
 ### InputBox
 
-![Screenshot](IputBoxExample.png)
+![Screenshot](InputBoxExample.png)
