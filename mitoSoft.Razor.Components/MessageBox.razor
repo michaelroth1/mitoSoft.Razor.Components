@@ -3,7 +3,9 @@
 @using mitoSoft.Razor.Components.Converters
 @using mitoSoft.Razor.Components.Enums
 
-@if (_show)
+@inherits SynchronousDialog
+
+@if (base.Visibility)
 {
     <div class="modal fade show" id="myModal" style="display: block;">
         <div class="modal-dialog modal-dialog-scrollable">
@@ -31,13 +33,21 @@
 }
 
 @code {
-    private bool _show;
+    //private bool _show;
     private string _title;
     private string _message;
     private DialogButtons _dialogButtons;
+    //private DialogResult _result;
+
+    //private System.Threading.ManualResetEvent mre = new(false);
 
     [Parameter]
     public Action<MouseEventArgs, DialogResult> OnClosed { get; set; }
+
+    public void Show(string message)
+    {
+        this.Show("", message);
+    }
 
     public void Show(string title, string message)
     {
@@ -49,54 +59,62 @@
         _dialogButtons = buttons;
         _title = title;
         _message = message;
-        _show = true;
-        InvokeAsync(StateHasChanged);
+        base.Show();
+    }
+
+    public async Task<DialogResult> ShowDialog(string title, string message, DialogButtons buttons)
+    {
+        this.Show(title, message, buttons);
+
+        return await base.ShowDialog();
     }
 
     private void CloseClicked(MouseEventArgs e)
     {
-        this.Close();
-        this.OnClosed?.Invoke(e, DialogResult.None);
+        this.Close(e, DialogResult.None);
     }
 
     private void YesClicked(MouseEventArgs e)
     {
-        this.Close();
         if (_dialogButtons == DialogButtons.OK
          || _dialogButtons == DialogButtons.OkCancle)
         {
-            this.OnClosed?.Invoke(e, DialogResult.OK);
+            this.DialogResult = DialogResult.OK;
+
         }
         else if (_dialogButtons == DialogButtons.YesNo)
         {
-            this.OnClosed?.Invoke(e, DialogResult.Yes);
+            this.DialogResult = DialogResult.Yes;
         }
         else
         {
             throw new InvalidOperationException($"Invaid DialogButtons '{_dialogButtons}'.");
         }
+
+        this.Close(e, this.DialogResult);
     }
 
     private void NoClicked(MouseEventArgs e)
     {
-        this.Close();
         if (_dialogButtons == DialogButtons.OkCancle)
         {
-            this.OnClosed?.Invoke(e, DialogResult.Cancle);
+            this.DialogResult = DialogResult.Cancle;
         }
         else if (_dialogButtons == DialogButtons.YesNo)
         {
-            this.OnClosed?.Invoke(e, DialogResult.No);
+            this.DialogResult = DialogResult.No;
         }
         else
         {
             throw new InvalidOperationException($"Invaid DialogButtons '{_dialogButtons}'.");
         }
+
+        this.Close(e, this.DialogResult);
     }
 
-    private void Close()
+    private void Close(MouseEventArgs e, DialogResult result)
     {
-        _show = false;
-        InvokeAsync(StateHasChanged);
+        base.Close(result);
+        this.OnClosed?.Invoke(e, result);
     }
 }

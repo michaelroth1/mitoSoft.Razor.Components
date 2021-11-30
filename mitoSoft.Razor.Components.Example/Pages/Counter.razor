@@ -1,46 +1,79 @@
 ﻿@page "/counter"
+@using mitoSoft.Razor.Components.Enums
 
 <h1>Counter</h1>
 
 <p>Current count: @currentCount</p>
 
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<button class="btn btn-primary" @onclick="IncrementCountAsync">Click me</button>
 
-<button class="btn btn-primary" @onclick="SetCount">Set Count</button>
+<button class="btn btn-primary" @onclick="IncrementCountSync">Count Up Sync</button>
+
+<br />
+<br />
+
+<button class="btn btn-primary" @onclick="SetCountAsync">Set Count Async</button>
+
+<button class="btn btn-primary" @onclick="SetCountSync">Set Count Sync</button>
 
 <MessageBox @ref=@_messageBox></MessageBox>
 
-<InputBox @ref="@_inputBox" OnOkClicked="@SetCurrentCount"></InputBox>
+<InputBox @ref="@_inputBox" OnOkClicked="@SetCountAsyncCallback"></InputBox>
+<InputBox @ref="@_inputBoxSync"></InputBox>
 
 @code {
     private int currentCount = 0;
     private MessageBox _messageBox;
     private InputBox _inputBox;
+    private InputBox _inputBoxSync;
 
-    private void IncrementCount()
+    private async void IncrementCountSync()
+    {
+        var result = await this._messageBox.ShowDialog("Counter", $"Do you want count up?", Enums.DialogButtons.YesNo);
+
+        if (result == Enums.DialogResult.Yes)
+        {
+            currentCount++;
+        }
+
+        this._messageBox.Show("Counter",$"Current count: {currentCount}");
+    }
+
+    private void IncrementCountAsync()
     {
         currentCount++;
 
         if (currentCount <= 1)
         {
-            this._messageBox.Show("CounterMessage", $"Count: {currentCount}!", Enums.DialogButtons.OK);
+            this._messageBox.Show("Counter", $"Current count: {currentCount}", Enums.DialogButtons.OK);
         }
         else if (currentCount == 2)
         {
-            this._messageBox.Show("CounterMessage", $"Count: {currentCount}!", Enums.DialogButtons.OkCancle);
+            this._messageBox.Show("Counter", $"Current count: {currentCount}", Enums.DialogButtons.OkCancle);
         }
         else if (currentCount >= 3)
         {
-            this._messageBox.Show("CounterMessage", $"Count: {currentCount}!", Enums.DialogButtons.YesNo);
+            this._messageBox.Show("Counter", $"Current count: {currentCount}", Enums.DialogButtons.YesNo);
         }
     }
 
-    private void SetCount()
+    private async void SetCountSync()
+    {
+        var result = await _inputBoxSync.ShowDialog("Set Count", "Please set new 'currentCount':", "currentCount");
+
+        if (result == DialogResult.OK)
+        {
+            currentCount = int.Parse(_inputBoxSync.Result);
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    private void SetCountAsync()
     {
         this._inputBox.Show("Set Count", "Please set new 'currentCount':");
     }
 
-    private void SetCurrentCount(MouseEventArgs e, string result)
+    private void SetCountAsyncCallback(MouseEventArgs e, string result)
     {
         try
         {

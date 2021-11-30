@@ -1,6 +1,9 @@
-﻿@*http://blog.ppedv.de/post/Boostrap-Modal-Dialog-fur-Blazor*@
+﻿@using mitoSoft.Razor.Components.Enums
+@*http://blog.ppedv.de/post/Boostrap-Modal-Dialog-fur-Blazor*@
 
-@if (_show)
+@inherits SynchronousDialog
+
+@if (base.Visibility)
 {
     <div class="modal fade show" id="myModal" style="display: block;">
         <div class="modal-dialog modal-dialog-scrollable">
@@ -45,9 +48,9 @@
     [Parameter]
     public Action<MouseEventArgs, string> OnOkClicked { get; set; }
 
-    public void Show(string title)
+    public void Show(string prompt)
     {
-        this.Show(title, "", "");
+        this.Show("", prompt);
     }
 
     public void Show(string title, string prompt)
@@ -60,26 +63,26 @@
         _title = title;
         _prompt = prompt;
         _placeholder = placeholder;
-        _show = true;
         this.Result = string.Empty;
-        InvokeAsync(StateHasChanged);
+        base.Show();
+    }
+
+    public async Task<DialogResult> ShowDialog(string title, string prompt, string placeholder)
+    {
+        this.Show(title, prompt, placeholder);
+
+        return await base.ShowDialog();
     }
 
     private void CloseClicked(MouseEventArgs e)
     {
-        this.Close();
+        base.Close(DialogResult.None);
         this.OnClosed?.Invoke(e);
     }
 
     private void OkClicked(MouseEventArgs e)
     {
-        this.Close();
+        base.Close(DialogResult.OK);
         this.OnOkClicked?.Invoke(e, this.Result);
-    }
-
-    private void Close()
-    {
-        _show = false;
-        InvokeAsync(StateHasChanged);
     }
 }
