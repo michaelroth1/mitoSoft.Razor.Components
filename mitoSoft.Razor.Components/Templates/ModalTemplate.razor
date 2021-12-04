@@ -10,12 +10,18 @@
                         <button type="button" class="close" data-dismiss="modal" @onclick="@CloseClicked">&times;</button>
                     }
                 </div>
-                <div class="modal-body">
-                    @Content
+                @if (this.Content != null)
+                {
+                    <div class="modal-body">
+                        @Content
                 </div>
-                <div class="modal-footer">
-                    @Footer
-                </div>
+                }
+                @if (this.Footer != null)
+                {
+                    <div class="modal-footer">
+                        @Footer
+                    </div>
+                }
             </div>
         </div>
     </div>
