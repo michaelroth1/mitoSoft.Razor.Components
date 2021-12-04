@@ -3,40 +3,27 @@
 @using mitoSoft.Razor.Components.Converters
 @using mitoSoft.Razor.Components.Enums
 
-@inherits SynchronousDialog
-
-@if (base.Visibility)
-{
-    <div class="modal fade show" id="myModal" style="display: block;">
-        <div class="modal-dialog modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4>@this._title</h4>
-                    <button type="button" class="close" data-dismiss="modal" @onclick="@CloseClicked">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <p>
-                        @_message
-                    </p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" @onclick="@YesClicked">@_dialogButtons.ToYesText()</button>
-                    @if (_dialogButtons == DialogButtons.OkCancle || _dialogButtons == DialogButtons.YesNo)
-                    {
-                        <button type="button" class="btn btn-primary" @onclick="@NoClicked">@_dialogButtons.ToNoText()</button>
-                    }
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal-backdrop fade show"></div>
-}
+<SynchronousModal @ref="@_modal" Title="@_title" OnCloseClicked="@CloseClicked">
+    <Content>
+        <p>
+            @_message
+        </p>
+    </Content>
+    <Footer>
+        <button type="button" class="btn btn-primary" @onclick="@YesClicked">@_dialogButtons.ToYesText()</button>
+        @if (_dialogButtons == DialogButtons.OkCancle || _dialogButtons == DialogButtons.YesNo)
+        {
+            <button type="button" class="btn btn-primary" @onclick="@NoClicked">@_dialogButtons.ToNoText()</button>
+        }
+    </Footer>
+</SynchronousModal>
 
 @code {
     private string _title;
     private string _message;
     private DialogButtons _dialogButtons;
-    
+    private SynchronousModal _modal;
+
     [Parameter]
     public Action<MouseEventArgs, DialogResult> OnClosed { get; set; }
 
@@ -55,19 +42,14 @@
         _dialogButtons = buttons;
         _title = title;
         _message = message;
-        base.Show();
+        _modal.Show();
     }
 
     public async Task<DialogResult> ShowDialog(string title, string message, DialogButtons buttons)
     {
         this.Show(title, message, buttons);
 
-        return await base.ShowDialog();
-    }
-
-    private void CloseClicked(MouseEventArgs e)
-    {
-        this.Close(e, DialogResult.None);
+        return await _modal.ShowDialog();
     }
 
     private void YesClicked(MouseEventArgs e)
@@ -75,42 +57,47 @@
         if (_dialogButtons == DialogButtons.OK
          || _dialogButtons == DialogButtons.OkCancle)
         {
-            this.DialogResult = DialogResult.OK;
+            _modal.DialogResult = DialogResult.OK;
 
         }
         else if (_dialogButtons == DialogButtons.YesNo)
         {
-            this.DialogResult = DialogResult.Yes;
+            _modal.DialogResult = DialogResult.Yes;
         }
         else
         {
             throw new InvalidOperationException($"Invaid DialogButtons '{_dialogButtons}'.");
         }
 
-        this.Close(e, this.DialogResult);
+        this.Close(e, _modal.DialogResult);
     }
 
     private void NoClicked(MouseEventArgs e)
     {
         if (_dialogButtons == DialogButtons.OkCancle)
         {
-            this.DialogResult = DialogResult.Cancle;
+            _modal.DialogResult = DialogResult.Cancle;
         }
         else if (_dialogButtons == DialogButtons.YesNo)
         {
-            this.DialogResult = DialogResult.No;
+            _modal.DialogResult = DialogResult.No;
         }
         else
         {
             throw new InvalidOperationException($"Invaid DialogButtons '{_dialogButtons}'.");
         }
 
-        this.Close(e, this.DialogResult);
+        this.Close(e, _modal.DialogResult);
+    }
+
+    private void CloseClicked(MouseEventArgs e)
+    {
+        this.OnClosed?.Invoke(e, DialogResult.None);
     }
 
     private void Close(MouseEventArgs e, DialogResult result)
     {
-        base.Close(result);
+        _modal.Close(result);
         this.OnClosed?.Invoke(e, result);
     }
 }

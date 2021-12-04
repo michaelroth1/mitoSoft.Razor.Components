@@ -18,7 +18,7 @@
 
 <MessageBox @ref=@_messageBox></MessageBox>
 
-<InputBox @ref="@_inputBox" OnOkClicked="@SetCountAsyncCallback"></InputBox>
+<InputBox @ref="@_inputBox" OnClosed="@SetCountAsyncCallback"></InputBox>
 <InputBox @ref="@_inputBoxSync"></InputBox>
 
 @code {
@@ -36,7 +36,7 @@
             currentCount++;
         }
 
-        this._messageBox.Show("Counter",$"Current count: {currentCount}");
+        this._messageBox.Show("Counter", $"Current count: {currentCount}");
     }
 
     private void IncrementCountAsync()
@@ -61,9 +61,9 @@
     {
         var result = await _inputBoxSync.ShowDialog("Set Count", "Please set new 'currentCount':", "currentCount");
 
-        if (result == DialogResult.OK)
+        if (result == DialogResult.OK && int.TryParse(_inputBoxSync.Result, out int count))
         {
-            currentCount = int.Parse(_inputBoxSync.Result);
+            currentCount = count;
             await InvokeAsync(StateHasChanged);
         }
     }
@@ -73,13 +73,15 @@
         this._inputBox.Show("Set Count", "Please set new 'currentCount':");
     }
 
-    private void SetCountAsyncCallback(MouseEventArgs e, string result)
+    private void SetCountAsyncCallback(MouseEventArgs e, DialogResult result)
     {
-        try
+        if (result == DialogResult.OK)
         {
-            currentCount = int.Parse(result);
-            InvokeAsync(StateHasChanged);
+            if (int.TryParse(_inputBox.Result, out int count))
+            {
+                currentCount = count;
+                InvokeAsync(StateHasChanged);
+            }
         }
-        catch { }
     }
 }

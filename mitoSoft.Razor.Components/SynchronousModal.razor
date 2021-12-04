@@ -1,0 +1,45 @@
+﻿@using mitoSoft.Razor.Components.Converters
+@using mitoSoft.Razor.Components.Enums
+
+@inherits SynchronousDialog
+
+@if (base.Visibility)
+{
+    <div class="modal fade show" id="myModal" style="display: block;">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4>@Title</h4>
+                    <button type="button" class="close" data-dismiss="modal" @onclick="@CloseClicked">&times;</button>
+                </div>
+                <div class="modal-body">
+                    @Content
+                </div>
+                <div class="modal-footer">
+                    @Footer
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-backdrop fade show"></div>
+}
+
+@code {
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public RenderFragment Content { get; set; }
+
+    [Parameter]
+    public RenderFragment Footer { get; set; }
+
+    [Parameter]
+    public Action<MouseEventArgs> OnCloseClicked { get; set; }
+
+    private void CloseClicked(MouseEventArgs e)
+    {
+        this.Close(DialogResult.None);
+        this.OnCloseClicked?.Invoke(e);
+    }
+}

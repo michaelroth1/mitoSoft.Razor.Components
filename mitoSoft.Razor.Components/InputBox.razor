@@ -1,52 +1,35 @@
 ﻿@using mitoSoft.Razor.Components.Enums
 @*http://blog.ppedv.de/post/Boostrap-Modal-Dialog-fur-Blazor*@
 
-@inherits SynchronousDialog
-
-@if (base.Visibility)
-{
-    <div class="modal fade show" id="myModal" style="display: block;">
-        <div class="modal-dialog modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4>@this._title</h4>
-                    <button type="button" class="close" data-dismiss="modal" @onclick="@CloseClicked">&times;</button>
-                </div>
-                <div class="modal-body">
-                    @if (!string.IsNullOrWhiteSpace(this._prompt))
-                    {
-                        <p>
-                            @this._prompt
-                        </p>
-                    }
-                    <p>
-                        <input type="text" class="form-control" placeholder="@this._placeholder" @bind="@Result">
-                    </p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" @onclick="@OkClicked">OK</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="@CloseClicked">@Properties.Resources.Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal-backdrop fade show"></div>
-}
+<SynchronousModal @ref="@_modal" Title="@this._title" OnCloseClicked="@CloseClicked">
+    <Content>
+        @if (!string.IsNullOrWhiteSpace(this._prompt))
+        {
+            <p>
+                @this._prompt
+            </p>
+        }
+        <p>
+            <input type="text" class="form-control" placeholder="@this._placeholder" @bind="@Result">
+        </p>
+    </Content>
+    <Footer>
+        <button type="button" class="btn btn-primary" @onclick="@OkClicked">OK</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="@CloseClicked">@Properties.Resources.Close</button>
+    </Footer>
+</SynchronousModal>
 
 @code {
-    private bool _show;
     private string _title;
     private string _prompt;
     private string _placeholder;
+    private SynchronousModal _modal;
 
     [Parameter]
     public string Result { get; set; }
 
     [Parameter]
-    public Action<MouseEventArgs> OnClosed { get; set; }
-
-    [Parameter]
-    public Action<MouseEventArgs, string> OnOkClicked { get; set; }
+    public Action<MouseEventArgs, DialogResult> OnClosed { get; set; }
 
     public void Show(string prompt)
     {
@@ -64,25 +47,25 @@
         _prompt = prompt;
         _placeholder = placeholder;
         this.Result = string.Empty;
-        base.Show();
+        _modal.Show();
     }
 
     public async Task<DialogResult> ShowDialog(string title, string prompt, string placeholder)
     {
         this.Show(title, prompt, placeholder);
 
-        return await base.ShowDialog();
+        return await _modal.ShowDialog();
     }
 
     private void CloseClicked(MouseEventArgs e)
     {
-        base.Close(DialogResult.None);
-        this.OnClosed?.Invoke(e);
+        _modal.Close(DialogResult.None);
+        this.OnClosed?.Invoke(e, DialogResult.None);
     }
 
     private void OkClicked(MouseEventArgs e)
     {
-        base.Close(DialogResult.OK);
-        this.OnOkClicked?.Invoke(e, this.Result);
+        _modal.Close(DialogResult.OK);
+        this.OnClosed?.Invoke(e, DialogResult.OK);
     }
 }
