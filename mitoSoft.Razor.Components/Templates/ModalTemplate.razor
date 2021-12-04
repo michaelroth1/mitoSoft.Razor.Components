@@ -1,16 +1,14 @@
-﻿@using mitoSoft.Razor.Components.Converters
-@using mitoSoft.Razor.Components.Enums
-
-@inherits SynchronousDialog
-
-@if (base.Visibility)
+﻿@if (Visibility)
 {
     <div class="modal fade show" id="myModal" style="display: block;">
         <div class="modal-dialog modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4>@Title</h4>
-                    <button type="button" class="close" data-dismiss="modal" @onclick="@CloseClicked">&times;</button>
+                    @if (this.ShowCloseButton)
+                    {
+                        <button type="button" class="close" data-dismiss="modal" @onclick="@CloseClicked">&times;</button>
+                    }
                 </div>
                 <div class="modal-body">
                     @Content
@@ -26,6 +24,12 @@
 
 @code {
     [Parameter]
+    public bool ShowCloseButton { get; set; } = true;
+
+    [Parameter]
+    public bool Visibility { get; set; }
+
+    [Parameter]
     public string Title { get; set; }
 
     [Parameter]
@@ -39,7 +43,6 @@
 
     private void CloseClicked(MouseEventArgs e)
     {
-        this.Close(DialogResult.None);
         this.OnCloseClicked?.Invoke(e);
     }
 }

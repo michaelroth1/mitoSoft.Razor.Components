@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <Version>1.1.3</Version>
+    <Version>1.1.4</Version>
     <Company>mitoSoft</Company>
     <Description>A library that provides a Inputbox and a Messagebox</Description>
     <Copyright>(c) mitoSoft 2021</Copyright>
@@ -10,7 +10,7 @@
     <Authors>mitoSoft</Authors>
     <PackageTags>MessageBox Inputbox Razor Blazor</PackageTags>
     <PackageIcon>mitoSoft.png</PackageIcon>
-    <PackageReleaseNotes>[Feature] added SynchronousModal</PackageReleaseNotes>
+    <PackageReleaseNotes>[Feature] added ModalTemplate to build modals easier</PackageReleaseNotes>
   </PropertyGroup>
 
   

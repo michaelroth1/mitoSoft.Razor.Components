@@ -16,16 +16,24 @@
 
 <button class="btn btn-primary" @onclick="SetCountSync">Set Count Sync</button>
 
+<br />
+<br />
+
+<button class="btn btn-primary" @onclick="OpenDerivedModal">Open derived modal</button>
+
 <MessageBox @ref=@_messageBox></MessageBox>
 
 <InputBox @ref="@_inputBox" OnClosed="@SetCountAsyncCallback"></InputBox>
 <InputBox @ref="@_inputBoxSync"></InputBox>
+
+<DerivedModal @ref="@_derived"></DerivedModal>
 
 @code {
     private int currentCount = 0;
     private MessageBox _messageBox;
     private InputBox _inputBox;
     private InputBox _inputBoxSync;
+    private DerivedModal _derived;
 
     private async void IncrementCountSync()
     {
@@ -82,6 +90,17 @@
                 currentCount = count;
                 InvokeAsync(StateHasChanged);
             }
+        }
+    }
+
+    private async void OpenDerivedModal()
+    {
+        var r = await this._derived.ShowDialog();
+
+        if (r == DialogResult.OK)
+        {
+            //do something
+            //...
         }
     }
 }

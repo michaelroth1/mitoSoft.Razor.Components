@@ -1,7 +1,9 @@
 ﻿@using mitoSoft.Razor.Components.Enums
-@*http://blog.ppedv.de/post/Boostrap-Modal-Dialog-fur-Blazor*@
+@using mitoSoft.Razor.Components.Templates
 
-<SynchronousModal @ref="@_modal" Title="@this._title" OnCloseClicked="@CloseClicked">
+@inherits SynchronousDialog
+
+<ModalTemplate Visibility="@base.Visibility" Title="@this._title" OnCloseClicked="@CloseClicked">
     <Content>
         @if (!string.IsNullOrWhiteSpace(this._prompt))
         {
@@ -17,7 +19,7 @@
         <button type="button" class="btn btn-primary" @onclick="@OkClicked">OK</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="@CloseClicked">@Properties.Resources.Close</button>
     </Footer>
-</SynchronousModal>
+</ModalTemplate>
 
 @code {
     private string _title;
@@ -47,25 +49,25 @@
         _prompt = prompt;
         _placeholder = placeholder;
         this.Result = string.Empty;
-        _modal.Show();
+        base.Show();
     }
 
     public async Task<DialogResult> ShowDialog(string title, string prompt, string placeholder)
     {
         this.Show(title, prompt, placeholder);
 
-        return await _modal.ShowDialog();
+        return await base.ShowDialog();
     }
 
     private void CloseClicked(MouseEventArgs e)
     {
-        _modal.Close(DialogResult.None);
+        base.Close(DialogResult.None);
         this.OnClosed?.Invoke(e, DialogResult.None);
     }
 
     private void OkClicked(MouseEventArgs e)
     {
-        _modal.Close(DialogResult.OK);
+        base.Close(DialogResult.OK);
         this.OnClosed?.Invoke(e, DialogResult.OK);
     }
 }
