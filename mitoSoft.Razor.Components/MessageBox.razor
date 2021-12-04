@@ -20,11 +20,11 @@
                     </p>
                 </div>
                 <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" @onclick="@YesClicked">@_dialogButtons.ToYesText()</button>
                     @if (_dialogButtons == DialogButtons.OkCancle || _dialogButtons == DialogButtons.YesNo)
                     {
                         <button type="button" class="btn btn-primary" @onclick="@NoClicked">@_dialogButtons.ToNoText()</button>
                     }
-                    <button type="button" class="btn btn-primary" @onclick="@YesClicked">@_dialogButtons.ToYesText()</button>
                 </div>
             </div>
         </div>
@@ -33,14 +33,10 @@
 }
 
 @code {
-    //private bool _show;
     private string _title;
     private string _message;
     private DialogButtons _dialogButtons;
-    //private DialogResult _result;
-
-    //private System.Threading.ManualResetEvent mre = new(false);
-
+    
     [Parameter]
     public Action<MouseEventArgs, DialogResult> OnClosed { get; set; }
 
