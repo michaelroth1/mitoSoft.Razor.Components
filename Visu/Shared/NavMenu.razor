@@ -1,0 +1,86 @@
+﻿<div class="top-row pl-4 navbar navbar-dark">
+    <a class="navbar-brand" href="">Visu</a>
+    <button class="navbar-toggler" @onclick="ToggleNavMenu">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+</div>
+
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+    <ul class="nav flex-column">
+        @*<li class="nav-item px-3">
+            <NavLink class="nav-link" href="attic">
+            <div style="display:block; text-align:left; float:left;">
+            <img src="/Images/roof_128px.png" width="24" height="24" />
+            <label class="lead p-2">Dachgeschoss</label>
+            </div>
+            </NavLink>
+            </li>*@
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="firstfloor">
+                <div style="display:block; text-align:left; float:left;">
+                    <img src="/Images/firstfloor_128px.png" width="24" height="24" />
+                    <label class="lead p-2">Obergeschoss</label>
+                </div>
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="#">
+                <div style="display:block; text-align:left; float:left;">
+                    <img src="/Images/groundfloor_128px.png" width="24" height="24" />
+                    <label class="lead p-2">EG Licht</label>
+                </div>
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="groundfloorshutters">
+                <div style="display:block; text-align:left; float:left;">
+                    <img src="/Images/groundfloor_128px.png" width="24" height="24" />
+                    <label class="lead p-2">EG Beschattung</label>
+                </div>
+            </NavLink>
+        </li>
+        @* <li class="nav-item px-3">
+            <NavLink class="nav-link" href="basement">
+            <div style="display:block; text-align:left; float:left;">
+            <img src="/Images/basement_128px.png" width="24" height="24" />
+            <label class="lead p-2">Keller</label>
+            </div>
+            </NavLink>
+            </li>*@
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="door">
+                <div style="display:block; text-align:left; float:left;">
+                    <img src="/Images/securityCam_24px.png" width="24" height="24" />
+                    <label class="lead p-2">Türöffner</label>
+                </div>
+            </NavLink>
+        </li>
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="timers">
+                <div style="display:block; text-align:left; float:left;">
+                    <img src="/Images/clock_128px.png" width="24" height="24" />
+                    <label class="lead p-2">Zeitschaltuhren</label>
+                </div>
+            </NavLink>
+        </li>
+        @* <li class="nav-item px-3">
+            <NavLink class="nav-link" href="alarm">
+            <div style="display:block; text-align:left; float:left;">
+            <img src="/Images/clock_128px.png" width="24" height="24" />
+            <label class="lead p-2">Alarm</label>
+            </div>
+            </NavLink>
+            </li>*@
+    </ul>
+</div>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}
