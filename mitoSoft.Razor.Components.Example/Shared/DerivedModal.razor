@@ -1,0 +1,16 @@
+﻿@inherits SynchronousDialog
+
+<mitoSoft.Razor.Components.Templates.ModalTemplate Visibility="base.Visibility" OnCloseClicked="@CloseClicked">
+    <Content>
+        <p>
+            Hello World
+        </p>
+    </Content>
+</mitoSoft.Razor.Components.Templates.ModalTemplate>
+
+@code {
+    private void CloseClicked(MouseEventArgs e)
+    {
+        base.Close(Enums.DialogResult.None);
+    }
+}

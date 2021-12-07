@@ -1,0 +1,72 @@
+﻿@using mitoSoft.Razor.Components.Enums
+@using mitoSoft.Razor.Components.Templates
+
+@inherits SynchronousDialog
+
+<ModalTemplate Visibility="@base.Visibility" Title="@this._title" OnCloseClicked="@CloseClicked">
+    <Content>
+        @if (!string.IsNullOrWhiteSpace(this._prompt))
+        {
+            <p>
+                @this._prompt
+            </p>
+        }
+        <p>
+            <input type="text" class="form-control" placeholder="@this._placeholder" @bind="@Result">
+        </p>
+    </Content>
+    <Footer>
+        <button type="button" class="btn btn-primary" @onclick="@OkClicked">OK</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="@CloseClicked">@Properties.Resources.Close</button>
+    </Footer>
+</ModalTemplate>
+
+@code {
+    private string _title;
+    private string _prompt;
+    private string _placeholder;
+
+    [Parameter]
+    public string Result { get; set; }
+
+    [Parameter]
+    public Action<MouseEventArgs, DialogResult> OnClosed { get; set; }
+
+    public void Show(string prompt)
+    {
+        this.Show("", prompt);
+    }
+
+    public void Show(string title, string prompt)
+    {
+        this.Show(title, prompt, "");
+    }
+
+    public void Show(string title, string prompt, string placeholder)
+    {
+        _title = title;
+        _prompt = prompt;
+        _placeholder = placeholder;
+        this.Result = string.Empty;
+        base.Show();
+    }
+
+    public async Task<DialogResult> ShowDialog(string title, string prompt, string placeholder)
+    {
+        this.Show(title, prompt, placeholder);
+
+        return await base.ShowDialog();
+    }
+
+    private void CloseClicked(MouseEventArgs e)
+    {
+        base.Close(DialogResult.None);
+        this.OnClosed?.Invoke(e, DialogResult.None);
+    }
+
+    private void OkClicked(MouseEventArgs e)
+    {
+        base.Close(DialogResult.OK);
+        this.OnClosed?.Invoke(e, DialogResult.OK);
+    }
+}
