@@ -4,13 +4,13 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using mitoSoft.Razor.Components.Example.Data;
+using mitoSoft.Razor.Components.Examples.DotNet5.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace mitoSoft.Razor.Components.Example
+namespace mitoSoft.Razor.Components.Examples.DotNet5
 {
     public class Startup
     {

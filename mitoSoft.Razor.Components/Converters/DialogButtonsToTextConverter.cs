@@ -13,7 +13,7 @@ namespace mitoSoft.Razor.Components.Converters
             else
             {
                 return Properties.Resources.No;
-            }            
+            }
         }
 
         public static string ToYesText(this DialogButtons dialogResult)

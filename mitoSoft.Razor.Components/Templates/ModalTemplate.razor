@@ -7,14 +7,16 @@
                     <h4>@Title</h4>
                     @if (this.ShowCloseButton)
                     {
-                        <button type="button" class="close" data-dismiss="modal" @onclick="@CloseClicked">&times;</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close" @onclick="@CloseClicked">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     }
                 </div>
                 @if (this.Content != null)
                 {
                     <div class="modal-body">
                         @Content
-                </div>
+                    </div>
                 }
                 @if (this.Footer != null)
                 {

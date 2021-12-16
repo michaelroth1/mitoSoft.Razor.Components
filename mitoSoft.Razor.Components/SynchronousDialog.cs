@@ -15,31 +15,31 @@ namespace mitoSoft.Razor.Components
         {
             get
             {
-                return this._visibility;
+                return _visibility;
             }
             set
             {
-                this._visibility = value;
+                _visibility = value;
                 InvokeAsync(StateHasChanged);
             }
         }
 
         public virtual void Show()
         {
-            this.DialogResult = DialogResult.None;
+            DialogResult = DialogResult.None;
             mre = new(false);
-            this.Visibility = true;
+            Visibility = true;
         }
 
         public virtual async Task<DialogResult> ShowDialog()
         {
-            this.Show();
+            Show();
 
             await InvokeAsync(StateHasChanged);
 
-            await Task.Run(this.Wait);
+            await Task.Run(Wait);
 
-            return this.DialogResult;
+            return DialogResult;
         }
 
         private void Wait()
@@ -50,8 +50,8 @@ namespace mitoSoft.Razor.Components
         public virtual void Close(DialogResult dialogResult)
         {
             mre.Set();
-            this.Visibility = false;
-            this.DialogResult = dialogResult;
+            Visibility = false;
+            DialogResult = dialogResult;
             InvokeAsync(StateHasChanged);
         }
     }

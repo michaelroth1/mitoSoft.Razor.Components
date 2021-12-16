@@ -1,6 +1,4 @@
-using System;
-
-namespace mitoSoft.Razor.Components.Examples.DotNet5.Data
+namespace mitoSoft.Razor.Components.Examples.DotNet6.Data
 {
     public class WeatherForecast
     {
@@ -10,6 +8,6 @@ namespace mitoSoft.Razor.Components.Examples.DotNet5.Data
 
         public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
 
-        public string Summary { get; set; }
+        public string? Summary { get; set; }
     }
 }
