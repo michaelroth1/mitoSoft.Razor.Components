@@ -4,10 +4,10 @@
         <div class="modal-dialog modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4>@Title</h4>
+                    <lable class="mitosoft-title">@Title</lable>
                     @if (this.ShowCloseButton)
                     {
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal" aria-label="Close" @onclick="@CloseClicked">
+                        <button type="button" class="btn btn-secondary mitosoft-btn mitosoft-btn-secondary" data-dismiss="modal" aria-label="Close" @onclick="@CloseClicked">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     }

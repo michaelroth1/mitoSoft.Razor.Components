@@ -8,16 +8,20 @@
         @if (!string.IsNullOrWhiteSpace(this._prompt))
         {
             <p>
-                @this._prompt
+                <lable class="mitosoft-text">@this._prompt</lable>
             </p>
         }
         <p>
-            <input type="text" class="form-control" placeholder="@this._placeholder" @bind="@Result">
+            <input type="text" class="form-control" placeholder="@this._placeholder" @bind="@Result"/>
         </p>
     </Content>
     <Footer>
-        <button type="button" class="btn btn-primary" @onclick="@OkClicked">OK</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="@CloseClicked">@Properties.Resources.Close</button>
+        <button type="button" class="btn btn-primary mitosoft-btn mitosoft-btn-primary" @onclick="@OkClicked">
+            <lable class="mitosoft-text">OK</lable>
+        </button>
+        <button type="button" class="btn btn-secondary mitosoft-btn mitosoft-btn-primary" data-dismiss="modal" @onclick="@CloseClicked">
+            <lable class="mitosoft-text">@Properties.Resources.Close</lable>            
+        </button>
     </Footer>
 </ModalTemplate>
 

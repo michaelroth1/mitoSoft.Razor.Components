@@ -9,14 +9,18 @@
 <ModalTemplate Visibility="@base.Visibility" Title="@_title" OnCloseClicked="@CloseClicked">
     <Content>
         <p>
-            @_message
+            <lable class="mitosoft-text">@_message</lable>
         </p>
     </Content>
     <Footer>
-        <button type="button" class="btn btn-primary" @onclick="@YesClicked">@_dialogButtons.ToYesText()</button>
+        <button type="button" class="btn btn-primary mitosoft-btn mitosoft-btn-primary" @onclick="@YesClicked">
+            <lable class="mitosoft-text">@_dialogButtons.ToYesText()</lable>
+        </button>
         @if (_dialogButtons == DialogButtons.OkCancle || _dialogButtons == DialogButtons.YesNo)
         {
-            <button type="button" class="btn btn-primary" @onclick="@NoClicked">@_dialogButtons.ToNoText()</button>
+            <button type="button" class="btn btn-primary mitosoft-btn mitosoft-btn-primary" @onclick="@NoClicked">
+                <lable class="mitosoft-text">@_dialogButtons.ToNoText()</lable>
+            </button>
         }
     </Footer>
 </ModalTemplate>
