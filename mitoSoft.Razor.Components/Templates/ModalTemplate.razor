@@ -1,34 +1,37 @@
-﻿@if (Visibility)
-{
-    <div class="modal fade show" id="myModal" style="display: block;">
-        <div class="modal-dialog modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <lable class="mitosoft-title">@Title</lable>
-                    @if (this.ShowCloseButton)
+﻿
+<div class="mitosoft-component">
+    @if (Visibility)
+    {
+        <div class="modal fade show" id="myModal" style="display: block;">
+            <div class="modal-dialog modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <lable class="mitosoft-title">@Title</lable>
+                        @if (this.ShowCloseButton)
+                        {
+                            <button type="button" class="btn btn-secondary mitosoft-btn mitosoft-btn-secondary" data-dismiss="modal" aria-label="Close" @onclick="@CloseClicked">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        }
+                    </div>
+                    @if (this.Content != null)
                     {
-                        <button type="button" class="btn btn-secondary mitosoft-btn mitosoft-btn-secondary" data-dismiss="modal" aria-label="Close" @onclick="@CloseClicked">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        <div class="modal-body">
+                            @Content
+                        </div>
+                    }
+                    @if (this.Footer != null)
+                    {
+                        <div class="modal-footer">
+                            @Footer
+                        </div>
                     }
                 </div>
-                @if (this.Content != null)
-                {
-                    <div class="modal-body">
-                        @Content
-                    </div>
-                }
-                @if (this.Footer != null)
-                {
-                    <div class="modal-footer">
-                        @Footer
-                    </div>
-                }
             </div>
         </div>
-    </div>
-    <div class="modal-backdrop fade show"></div>
-}
+        <div class="modal-backdrop fade show"></div>
+    }
+</div>
 
 @code {
     [Parameter]
