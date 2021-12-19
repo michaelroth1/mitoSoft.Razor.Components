@@ -1,0 +1,21 @@
+﻿<div class="mitosoft-component-view rounded">
+    <div class="row">
+        <div class="col">
+            <div class="mt-2 mb-2 ms-2 ml-2 w-100"> @*ms-2 .net6; ml-2 .net5*@
+                @this.TextContent
+            </div>
+        </div>
+
+        <div class="col-auto">
+            @this.Buttons
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public RenderFragment TextContent { get; set; }
+
+    [Parameter]
+    public RenderFragment Buttons { get; set; }
+}

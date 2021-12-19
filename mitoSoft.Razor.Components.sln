@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "mitoSoft.Razor.Components",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "mitoSoft.Razor.Components.Examples.DotNet5", "mitoSoft.Razor.Components.Example\mitoSoft.Razor.Components.Examples.DotNet5.csproj", "{94970D4A-15EE-45BE-AE9C-31AF780216A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mitoSoft.Razor.Components.Examples.DotNet6", "mitoSoft.Razor.Components.Examples.DotNet6\mitoSoft.Razor.Components.Examples.DotNet6.csproj", "{552402DD-D598-4B02-8DFD-DEDFDE3936DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "mitoSoft.Razor.Components.Examples.DotNet6", "mitoSoft.Razor.Components.Examples.DotNet6\mitoSoft.Razor.Components.Examples.DotNet6.csproj", "{552402DD-D598-4B02-8DFD-DEDFDE3936DE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
