@@ -1,0 +1,44 @@
+﻿@using Microsoft.AspNetCore.Components
+
+<div class="mitosoft-component">
+    <div class="mitosoft-collapse">
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col">
+                        <lable class="mitosoft-title">
+                            @this.Title
+                        </lable>
+                    </div>
+                    <div class="col-auto">
+                        <button class="btn btn-secondary mitosoft-btn mitosoft-btn-secondary" type="button" @onclick="Toggle">
+                            <span class="oi oi-layers" aria-hidden="true" />
+                        </button>
+                    </div>
+                </div>
+            </div>
+            @if (this.ShowCardBody == true && this.CardBody != null)
+            {
+                <div class="card-body">
+                    @CardBody
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public RenderFragment CardBody { get; set; }
+
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public bool ShowCardBody { get; set; } = false;
+
+    public void Toggle()
+    {
+        ShowCardBody = !ShowCardBody;
+    }
+}

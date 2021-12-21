@@ -1,5 +1,6 @@
 ﻿@page "/counter"
 @using mitoSoft.Razor.Components.Enums
+@using mitoSoft.Razor.Components.Templates
 
 <h1>Counter</h1>
 
@@ -12,14 +13,20 @@
 <br />
 <br />
 
-<button class="btn btn-primary" @onclick="SetCountAsync">Set Count Async</button>
+<CollapsibleCard Title="Collapse">
+    <CardBody>
+        <div>
+            <button class="btn btn-primary" @onclick="SetCountAsync">Set Count Async</button>
 
-<button class="btn btn-primary" @onclick="SetCountSync">Set Count Sync</button>
+            <button class="btn btn-primary" @onclick="SetCountSync">Set Count Sync</button>
 
-<br />
-<br />
+            <br />
+            <br />
 
-<button class="btn btn-primary" @onclick="OpenDerivedModal">Open derived modal</button>
+            <button class="btn btn-primary" @onclick="OpenDerivedModal">Open derived modal</button>
+        </div>
+    </CardBody>
+</CollapsibleCard>
 
 <MessageBox @ref=@_messageBox></MessageBox>
 
