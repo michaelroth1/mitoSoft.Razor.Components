@@ -15,9 +15,18 @@
         </div>
 
         <article class="content px-4">
-            <mitoSoft.Razor.Components.ErrorBoundary Mode="ErrorBoundaryMode.ErrorText">
+            <mitoSoft.Razor.Components.ErrorBoundary @ref="_errorBoundary" OnExceptionFired="this.GlobalExceptionFired" Mode="ErrorBoundaryMode.JSModal">
                 @Body
             </mitoSoft.Razor.Components.ErrorBoundary>
         </article>
     </main>
 </div>
+
+@code{
+    private mitoSoft.Razor.Components.ErrorBoundary _errorBoundary = default!;
+
+    private void GlobalExceptionFired(Exception e)
+    {
+        _errorBoundary.Message = "ChangedExceptionText";
+    }
+}

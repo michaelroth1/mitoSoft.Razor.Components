@@ -2,15 +2,15 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <Version>6.1.2</Version>
+    <Version>6.1.3</Version>
     <Company>mitoSoft</Company>
-    <Description>A library that provides a Inputbox and a Messagebox</Description>
+    <Description>A library that provides common components, like e.g. Inputbox and Messagebox, for Blazor Websites</Description>
     <Copyright>(c) mitoSoft 2021</Copyright>
     <PackageProjectUrl>https://github.com/michaelroth1/mitoSoft.Razor.Components</PackageProjectUrl>
     <Authors>mitoSoft</Authors>
     <PackageTags>MessageBox Inputbox Razor Blazor</PackageTags>
     <PackageIcon>mitoSoft.png</PackageIcon>
-    <PackageReleaseNotes>[Feature] added 'ErrorBoundary'</PackageReleaseNotes>
+    <PackageReleaseNotes>[Feature] added event in 'ErrorBoundary'</PackageReleaseNotes>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
   </PropertyGroup>
 
