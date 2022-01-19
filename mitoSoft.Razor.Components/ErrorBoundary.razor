@@ -37,14 +37,12 @@ else
 @code {
     List<Exception> receivedExceptions = new();
     private string _message = "";
-    private bool _buttonClicked = false;
 
     [Parameter]
     public ErrorBoundaryMode Mode { get; set; } = ErrorBoundaryMode.JSModal;
 
     protected override Task OnErrorAsync(Exception exception)
     {
-        _buttonClicked = false;
         _message = exception.Message;
         receivedExceptions.Add(exception);
 
@@ -59,7 +57,6 @@ else
     private void OkClicked()
     {
         _message = "";
-        _buttonClicked = true;
         InvokeAsync(StateHasChanged);
     }
 
