@@ -1,0 +1,81 @@
+﻿@using mitoSoft.Razor.Components.Enums
+
+@inherits Microsoft.AspNetCore.Components.Web.ErrorBoundary
+
+@inject IJSRuntime JsRuntime
+
+@* https://github.com/dotnet/aspnetcore/blob/9ace45d8dffb0c89026df3cd989b49f87c61344c/src/Components/test/testassets/BasicTestApp/ErrorBoundaryTest/CustomErrorBoundary.razor *@
+
+@if (!string.IsNullOrEmpty(_message) && ErrorContent is null && Mode == ErrorBoundaryMode.ErrorText)
+{
+    <div class="mitosoft-error-boundary">
+        <div class="row">
+            <label class="form-label text-danger mitosoft-text-danger">
+                @_message
+            </label>
+        </div>
+        <div class="row">
+            <div class="col-auto">
+                <button class="btn btn-danger mitosoft-btn mitosoft-btn-danger" @onclick="OkClicked">
+                    Ok
+                </button>
+            </div>
+        </div>
+    </div>
+
+    @ChildContent
+}
+else if (ErrorContent is not null)
+{
+    @ErrorContent(CurrentException!)
+}
+else
+{
+    @ChildContent
+}
+
+@code {
+    List<Exception> receivedExceptions = new();
+    private string _message = "";
+    private bool _buttonClicked = false;
+
+    [Parameter]
+    public ErrorBoundaryMode Mode { get; set; } = ErrorBoundaryMode.JSModal;
+
+    protected override Task OnErrorAsync(Exception exception)
+    {
+        _buttonClicked = false;
+        _message = exception.Message;
+        receivedExceptions.Add(exception);
+
+        if (Mode == ErrorBoundaryMode.JSModal)
+        {
+            this.ShowExceptionMessage(exception.Message);
+        }
+
+        return base.OnErrorAsync(exception);
+    }
+
+    private void OkClicked()
+    {
+        _message = "";
+        _buttonClicked = true;
+        InvokeAsync(StateHasChanged);
+    }
+
+    public new void Recover()
+    {
+        receivedExceptions.Clear();
+        base.Recover();
+    }
+
+    private void ShowExceptionMessage(string message)
+    {
+        JsRuntime.InvokeVoidAsync("alert", message);
+    }
+
+    protected override void OnParametersSet() //website state bleibt erhalten
+    {
+        this?.Recover();
+    }
+}

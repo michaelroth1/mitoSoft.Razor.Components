@@ -1,4 +1,6 @@
-﻿@inherits LayoutComponentBase
+﻿@using mitoSoft.Razor.Components.Enums
+
+@inherits LayoutComponentBase
 
 <PageTitle>mitoSoft.Razor.Components.Examples.DotNet6</PageTitle>
 
@@ -13,7 +15,9 @@
         </div>
 
         <article class="content px-4">
-            @Body
+            <mitoSoft.Razor.Components.ErrorBoundary Mode="ErrorBoundaryMode.ErrorText">
+                @Body
+            </mitoSoft.Razor.Components.ErrorBoundary>
         </article>
     </main>
 </div>

@@ -10,6 +10,8 @@
 
 <button class="btn btn-primary" @onclick="IncrementCountSync">Count Up Sync</button>
 
+<button class="btn btn-primary" @onclick="ThrowException">Throw Exception</button>
+
 <br />
 <br />
 
@@ -37,10 +39,10 @@
 
 @code {
     private int currentCount = 0;
-    private MessageBox _messageBox;
-    private InputBox _inputBox;
-    private InputBox _inputBoxSync;
-    private DerivedModal _derived;
+    private MessageBox _messageBox = default!;
+    private InputBox _inputBox = default!;
+    private InputBox _inputBoxSync = default!;
+    private DerivedModal _derived = default!;
 
     private async void IncrementCountSync()
     {
@@ -49,10 +51,15 @@
         if (result == Enums.DialogResult.Yes)
         {
             currentCount++;
-            InvokeAsync(StateHasChanged);
+            await InvokeAsync(StateHasChanged);
         }
 
         this._messageBox.Show("Counter", $"Current count: {currentCount}");
+    }
+
+    private void ThrowException()
+    {
+        throw new Exception("ExceptionText" + currentCount);
     }
 
     private void IncrementCountAsync()
