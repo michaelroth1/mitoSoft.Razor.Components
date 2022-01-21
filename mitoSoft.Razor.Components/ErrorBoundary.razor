@@ -6,58 +6,75 @@
 
 @* https://github.com/dotnet/aspnetcore/blob/9ace45d8dffb0c89026df3cd989b49f87c61344c/src/Components/test/testassets/BasicTestApp/ErrorBoundaryTest/CustomErrorBoundary.razor *@
 
-@if (!string.IsNullOrEmpty(this.Message) && ErrorContent is null && Mode == ErrorBoundaryMode.ErrorText)
+@if (!string.IsNullOrEmpty(this._message) && ErrorContent is not null)
+{
+    @ErrorContent(CurrentException!)
+}
+else if (!string.IsNullOrEmpty(this._message) && this.Mode == ErrorBoundaryMode.ErrorText)
 {
     <div class="mitosoft-error-boundary">
         <div class="row">
             <label class="form-label text-danger mitosoft-text-danger">
-                @this.Message
+                @this._message
             </label>
         </div>
-        <div class="row">
-            <div class="col-auto">
-                <button class="btn btn-danger mitosoft-btn mitosoft-btn-danger" @onclick="OkClicked">
-                    Ok
-                </button>
+        @if (this.Reload)
+        {
+            <div class="row">
+                <div class="col-auto">
+                    <button class="btn btn-danger mitosoft-btn mitosoft-btn-danger" @onclick="OkClicked">
+                        Ok
+                    </button>
+                </div>
             </div>
-        </div>
+        }
     </div>
 
-    @ChildContent
+    @if (this.ShowChildContentOnError)
+    {
+        @ChildContent
+    }
 }
-else if (ErrorContent is not null)
-{
-    @ErrorContent(CurrentException!)
-}
-else
+else if (string.IsNullOrEmpty(this._message))
 {
     @ChildContent
 }
 
 @code {
-    List<Exception> receivedExceptions = new();
+    private string _message = string.Empty;
 
     [Parameter]
-    public Action<Exception> OnExceptionFired { get; set; }
+    public ErrorBoundaryHandler Handler { get; set; } = new();
 
     [Parameter]
-    public string Message { get; set; } = "";
+    public ErrorBoundaryMode Mode { get; set; } = ErrorBoundaryMode.ErrorText;
 
     [Parameter]
-    public ErrorBoundaryMode Mode { get; set; } = ErrorBoundaryMode.JSModal;
+    public bool Reload { get; set; } = false;
+
+    [Parameter]
+    public bool ShowChildContentOnError { get; set; } = false;
 
     protected override Task OnErrorAsync(Exception exception)
     {
-        this.Message = exception.Message;
-        receivedExceptions.Add(exception);
+        _message = exception.Message;
+        var eventArgs = new ErrorBoundaryEventArgs(_message, this.Reload, this.Mode, this.ShowChildContentOnError);
 
-        this.OnExceptionFired?.Invoke(exception);
+        this.Handler.InvokeExceptionFiredEvent(eventArgs);
 
-        if (Mode == ErrorBoundaryMode.JSModal)
+        _message = eventArgs.Message;
+        this.Reload = eventArgs.Reload;
+        this.Mode = eventArgs.Mode;
+        this.ShowChildContentOnError = eventArgs.ShowChildContentOnError;
+
+        if (this.Mode == ErrorBoundaryMode.JSModal)
         {
-            this.ShowExceptionMessage(this.Message);
+            this.ShowExceptionMessage(this._message);
 
-            this.Message = "";
+            if (this.Reload)
+            {
+                this.Recover();
+            }
         }
 
         return base.OnErrorAsync(exception);
@@ -65,24 +82,20 @@ else
 
     private void OkClicked()
     {
-        this.Message = "";
-        InvokeAsync(StateHasChanged);
+        if (this.Reload)
+        {
+            this.Recover();
+        }
     }
 
     public new void Recover()
     {
-        this.Message = "";
-        receivedExceptions.Clear();
+        this._message = "";
         base.Recover();
     }
 
     private void ShowExceptionMessage(string message)
     {
         JsRuntime.InvokeVoidAsync("alert", message);
-    }
-
-    protected override void OnParametersSet() //website state bleibt erhalten
-    {
-        this?.Recover();
     }
 }

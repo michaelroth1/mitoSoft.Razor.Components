@@ -1,5 +1,7 @@
 ﻿@using mitoSoft.Razor.Components.Enums
 
+@inject ErrorBoundaryHandler ErrorBoundaryHandler
+
 @inherits LayoutComponentBase
 
 <PageTitle>mitoSoft.Razor.Components.Examples.DotNet6</PageTitle>
@@ -15,18 +17,28 @@
         </div>
 
         <article class="content px-4">
-            <mitoSoft.Razor.Components.ErrorBoundary @ref="_errorBoundary" OnExceptionFired="this.GlobalExceptionFired" Mode="ErrorBoundaryMode.JSModal">
+            <mitoSoft.Razor.Components.ErrorBoundary Handler="@ErrorBoundaryHandler">
                 @Body
             </mitoSoft.Razor.Components.ErrorBoundary>
         </article>
     </main>
 </div>
 
-@code{
-    private mitoSoft.Razor.Components.ErrorBoundary _errorBoundary = default!;
+@code {
+    private int currentCount = 0;
+    private MessageBox _messageBox = default!;
+    private InputBox _inputBox = default!;
+    private InputBox _inputBoxSync = default!;
+    private DerivedModal _derived = default!;
 
-    private void GlobalExceptionFired(Exception e)
+    protected override Task OnInitializedAsync()
     {
-        _errorBoundary.Message = "ChangedExceptionText";
+        ErrorBoundaryHandler.OnExceptionFired += this.OnGlobalExeptionFired;
+        return base.OnInitializedAsync();
+    }
+
+    private void OnGlobalExeptionFired(object? sender, ErrorBoundaryEventArgs e)
+    {
+        e.Message = "Changed exception text";
     }
 }

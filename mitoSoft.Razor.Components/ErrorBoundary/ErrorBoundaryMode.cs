@@ -1,4 +1,4 @@
-﻿namespace mitoSoft.Razor.Components.Enums
+﻿namespace mitoSoft.Razor.Components
 {
     public enum ErrorBoundaryMode
     {
