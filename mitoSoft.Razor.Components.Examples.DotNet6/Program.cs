@@ -10,7 +10,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
-builder.Services.AddSingleton<ErrorBoundaryHandler>();
+builder.Services.AddSingleton<ErrorBoundaryOptions>(new ErrorBoundaryOptions()
+{
+    Mode = ErrorBoundaryMode.JSModal,
+    Reload = false,
+    ShowChildContentOnError = false ,
+});
 
 var app = builder.Build();
 

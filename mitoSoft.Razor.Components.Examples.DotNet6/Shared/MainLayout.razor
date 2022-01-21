@@ -1,6 +1,6 @@
 ﻿@using mitoSoft.Razor.Components.Enums
 
-@inject ErrorBoundaryHandler ErrorBoundaryHandler
+@inject ErrorBoundaryOptions ErrorBoundaryOptions
 
 @inherits LayoutComponentBase
 
@@ -17,28 +17,9 @@
         </div>
 
         <article class="content px-4">
-            <mitoSoft.Razor.Components.ErrorBoundary Handler="@ErrorBoundaryHandler">
+            <mitoSoft.Razor.Components.ErrorBoundary Options="@ErrorBoundaryOptions" Handler="@(new ErrorBoundaryHandler())">
                 @Body
             </mitoSoft.Razor.Components.ErrorBoundary>
         </article>
     </main>
 </div>
-
-@code {
-    private int currentCount = 0;
-    private MessageBox _messageBox = default!;
-    private InputBox _inputBox = default!;
-    private InputBox _inputBoxSync = default!;
-    private DerivedModal _derived = default!;
-
-    protected override Task OnInitializedAsync()
-    {
-        ErrorBoundaryHandler.OnExceptionFired += this.OnGlobalExeptionFired;
-        return base.OnInitializedAsync();
-    }
-
-    private void OnGlobalExeptionFired(object? sender, ErrorBoundaryEventArgs e)
-    {
-        e.Message = "Changed exception text";
-    }
-}

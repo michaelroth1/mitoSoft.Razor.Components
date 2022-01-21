@@ -10,7 +10,7 @@
 {
     @ErrorContent(CurrentException!)
 }
-else if (!string.IsNullOrEmpty(this._message) && this.Mode == ErrorBoundaryMode.ErrorText)
+else if (!string.IsNullOrEmpty(this._message) && this.Options.Mode == ErrorBoundaryMode.ErrorText)
 {
     <div class="mitosoft-error-boundary">
         <div class="row">
@@ -18,7 +18,7 @@ else if (!string.IsNullOrEmpty(this._message) && this.Mode == ErrorBoundaryMode.
                 @this._message
             </label>
         </div>
-        @if (this.Reload)
+        @if (this.Options.Reload)
         {
             <div class="row">
                 <div class="col-auto">
@@ -30,7 +30,7 @@ else if (!string.IsNullOrEmpty(this._message) && this.Mode == ErrorBoundaryMode.
         }
     </div>
 
-    @if (this.ShowChildContentOnError)
+    @if (this.Options.ShowChildContentOnError)
     {
         @ChildContent
     }
@@ -44,34 +44,20 @@ else if (string.IsNullOrEmpty(this._message))
     private string _message = string.Empty;
 
     [Parameter]
-    public ErrorBoundaryHandler Handler { get; set; } = new();
+    public ErrorBoundaryOptions Options { get; set; }
 
     [Parameter]
-    public ErrorBoundaryMode Mode { get; set; } = ErrorBoundaryMode.ErrorText;
-
-    [Parameter]
-    public bool Reload { get; set; } = false;
-
-    [Parameter]
-    public bool ShowChildContentOnError { get; set; } = false;
+    public IErrorBoundaryHandler Handler { get; set; }
 
     protected override Task OnErrorAsync(Exception exception)
     {
-        _message = exception.Message;
-        var eventArgs = new ErrorBoundaryEventArgs(_message, this.Reload, this.Mode, this.ShowChildContentOnError);
+        _message = this.Handler?.OnExceptionFired(exception) ?? exception.Message;
 
-        this.Handler.InvokeExceptionFiredEvent(eventArgs);
-
-        _message = eventArgs.Message;
-        this.Reload = eventArgs.Reload;
-        this.Mode = eventArgs.Mode;
-        this.ShowChildContentOnError = eventArgs.ShowChildContentOnError;
-
-        if (this.Mode == ErrorBoundaryMode.JSModal)
+        if (this.Options.Mode == ErrorBoundaryMode.JSModal)
         {
             this.ShowExceptionMessage(this._message);
 
-            if (this.Reload)
+            if (this.Options.Reload)
             {
                 this.Recover();
             }
@@ -82,7 +68,7 @@ else if (string.IsNullOrEmpty(this._message))
 
     private void OkClicked()
     {
-        if (this.Reload)
+        if (this.Options.Reload)
         {
             this.Recover();
         }

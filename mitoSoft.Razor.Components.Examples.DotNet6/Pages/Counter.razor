@@ -2,9 +2,7 @@
 @using mitoSoft.Razor.Components.Enums
 @using mitoSoft.Razor.Components.Templates
 
-@implements IDisposable
-
-@inject ErrorBoundaryHandler ErrorBoundaryHandler
+@inject ErrorBoundaryOptions ErrorBoundaryOptions
 
 <h1>Counter</h1>
 
@@ -49,28 +47,9 @@
     private DerivedModal _derived = default!;
 
     protected override Task OnInitializedAsync()
-    {   
+    {
+        ErrorBoundaryOptions.Reload = true;
         return base.OnInitializedAsync();
-    }
-
-    protected override void OnAfterRender(bool firstRender)
-    {
-        if (firstRender)
-        {
-            ErrorBoundaryHandler.OnExceptionFired += this.OnGlobalExeptionFired;
-        }
-        base.OnAfterRender(firstRender);
-    }
-
-    public void Dispose()
-    {
-        ErrorBoundaryHandler.OnExceptionFired -= this.OnGlobalExeptionFired;
-    }
-
-    private void OnGlobalExeptionFired(object? sender, ErrorBoundaryEventArgs e)
-    {
-        e.Reload = true;
-        e.ShowChildContentOnError = true;
     }
 
     private async void IncrementCountSync()

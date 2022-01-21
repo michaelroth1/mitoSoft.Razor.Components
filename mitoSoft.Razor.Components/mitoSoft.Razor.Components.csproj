@@ -1,8 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk.Razor">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <Version>6.1.4</Version>
+    <Version>6.1.5</Version>
     <Company>mitoSoft</Company>
     <Description>A library that provides common components, like e.g. Inputbox and Messagebox, for Blazor Websites</Description>
     <Copyright>(c) mitoSoft 2021</Copyright>
