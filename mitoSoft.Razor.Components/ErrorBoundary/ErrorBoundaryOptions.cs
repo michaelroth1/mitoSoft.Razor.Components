@@ -7,5 +7,7 @@
         public ErrorBoundaryMode Mode { get; set; } = ErrorBoundaryMode.ErrorText;
 
         public bool ShowChildContentOnError { get; set; } = false;
+
+        public string RedirectUri { get; set; } = string.Empty;
     }
 }

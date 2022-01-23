@@ -1,7 +1,4 @@
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 using mitoSoft.Razor.Components;
-using mitoSoft.Razor.Components.Examples.DotNet6;
 using mitoSoft.Razor.Components.Examples.DotNet6.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,9 +9,10 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddSingleton<ErrorBoundaryOptions>(new ErrorBoundaryOptions()
 {
-    Mode = ErrorBoundaryMode.JSModal,
-    Reload = false,
-    ShowChildContentOnError = false ,
+    Mode = ErrorBoundaryMode.ErrorText,
+    Reload = true,
+    ShowChildContentOnError = false,
+    RedirectUri = "#",
 });
 
 var app = builder.Build();
