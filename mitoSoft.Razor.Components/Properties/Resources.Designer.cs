@@ -88,6 +88,15 @@ namespace mitoSoft.Razor.Components.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to please wait....
+        /// </summary>
+        internal static string please_wait_ {
+            get {
+                return ResourceManager.GetString("please_wait_", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Yes.
         /// </summary>
         internal static string Yes {

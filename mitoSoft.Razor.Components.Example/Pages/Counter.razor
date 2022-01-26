@@ -10,6 +10,8 @@
 
 <button class="btn btn-primary" @onclick="IncrementCountSync">Count Up Sync</button>
 
+<button class="btn btn-primary" @onclick="ShowSpinner">Show Wait Spinner</button>
+
 <br />
 <br />
 
@@ -35,12 +37,24 @@
 
 <DerivedModal @ref="@_derived"></DerivedModal>
 
+<mitoSoft.Razor.Components.WaitSpinner @ref="@_spinner"></mitoSoft.Razor.Components.WaitSpinner>
+
 @code {
     private int currentCount = 0;
-    private MessageBox _messageBox;
-    private InputBox _inputBox;
-    private InputBox _inputBoxSync;
-    private DerivedModal _derived;
+    private MessageBox _messageBox = default!;
+    private InputBox _inputBox = default!;
+    private InputBox _inputBoxSync = default!;
+    private DerivedModal _derived = default!;
+    private mitoSoft.Razor.Components.WaitSpinner _spinner = default!;
+
+    private async void ShowSpinner()
+    {
+        _spinner.Show();
+
+        await Task.Delay(5000);
+
+        _spinner.Hide();
+    }
 
     private async void IncrementCountSync()
     {
@@ -49,7 +63,7 @@
         if (result == Enums.DialogResult.Yes)
         {
             currentCount++;
-            InvokeAsync(StateHasChanged);
+            await InvokeAsync(StateHasChanged);
         }
 
         this._messageBox.Show("Counter", $"Current count: {currentCount}");

@@ -1,0 +1,30 @@
+﻿@using mitoSoft.Razor.Components.Enums
+@using mitoSoft.Razor.Components.Templates
+
+@inherits SynchronousDialog
+
+<ModalTemplate Visibility="@base.Visibility" Title="@Properties.Resources.please_wait_" ShowCloseButton="false">
+    <Content>
+        <div class="text-center">
+            <img src="./_content/mitoSoft.Razor.Components/images/spinner.gif" >
+        </div>
+    </Content>
+</ModalTemplate>
+
+@code {
+    public event EventHandler OnShow;
+
+    public event EventHandler OnHide;
+
+    public override void Show()
+    {
+        this.OnShow?.Invoke(this, EventArgs.Empty);
+        base.Show();
+    }
+
+    public void Hide()
+    {
+        this.Close(DialogResult.None);
+        this.OnHide?.Invoke(this, EventArgs.Empty);
+    }
+}

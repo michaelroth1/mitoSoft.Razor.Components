@@ -126,6 +126,9 @@
   <data name="No" xml:space="preserve">
     <value>No</value>
   </data>
+  <data name="please_wait_" xml:space="preserve">
+    <value>please wait...</value>
+  </data>
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>
   </data>
