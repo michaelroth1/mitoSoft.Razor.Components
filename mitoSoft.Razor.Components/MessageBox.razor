@@ -9,7 +9,7 @@
 <ModalTemplate Visibility="@base.Visibility" Title="@_title" OnCloseClicked="@CloseClicked">
     <Content>
         <p>
-            <lable class="mitosoft-text">@_message</lable>
+            <lable class="mitosoft-text">@((MarkupString) this._message)</lable>
         </p>
     </Content>
     <Footer>

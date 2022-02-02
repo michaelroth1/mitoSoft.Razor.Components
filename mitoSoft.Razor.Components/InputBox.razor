@@ -8,7 +8,7 @@
         @if (!string.IsNullOrWhiteSpace(this._prompt))
         {
             <p>
-                <lable class="mitosoft-text">@this._prompt</lable>
+                <lable class="mitosoft-text">@((MarkupString) this._prompt)</lable>
             </p>
         }
         <p>
