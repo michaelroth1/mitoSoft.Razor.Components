@@ -9,8 +9,6 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
 
-builder.Services.AddScoped<BlazorSpinner.SpinnerService>();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
